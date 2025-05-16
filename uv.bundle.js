@@ -1,0 +1,1 @@
+https://raw.githubusercontent.com/titaniumnetwork-dev/Ultraviolet/main/public/uv.bundle.js

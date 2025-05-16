@@ -2,63 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Stealth Proxy</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      background: #f9f9f9;
-      color: #333;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding-top: 50px;
-    }
-    h1 {
-      font-size: 24px;
-    }
-    input {
-      padding: 10px;
-      font-size: 16px;
-      width: 60%;
-      margin-bottom: 10px;
-    }
-    button {
-      padding: 10px 20px;
-      font-size: 16px;
-    }
-    iframe {
-      margin-top: 20px;
-      width: 90%;
-      height: 600px;
-      border: none;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ultraviolet Proxy</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Proxy Access</h1>
-  <p>Enter a URL to visit through proxy:</p>
-  <input id="site" type="text" placeholder="example.com" />
-  <button onclick="openProxy()">Go</button>
-  <iframe id="frame" style="display: none;"></iframe>
-
+  <div class="container">
+    <h1>Ultraviolet Proxy</h1>
+    <input type="text" id="url" placeholder="Enter a website URL" />
+    <button onclick="go()">Go</button>
+  </div>
+  <script src="uv.bundle.js"></script>
+  <script src="uv.config.js"></script>
   <script>
-    const encoder = {
-      encode: function(str) {
-        return btoa([...str].map(c => String.fromCharCode(c.charCodeAt(0) ^ 2)).join(''));
-      }
-    };
-
-    function openProxy() {
-      let url = document.getElementById("site").value.trim();
-      if (!url.startsWith("http")) {
-        url = "https://" + url;
-      }
-      const encoded = encoder.encode(url);
-      const fullUrl = "https://uv.bare.network/service/" + encoded;
-
-      const frame = document.getElementById("frame");
-      frame.src = fullUrl;
-      frame.style.display = "block";
+    function go() {
+      const input = document.getElementById("url").value.trim();
+      if (!input) return;
+      const encodedUrl = __uv$config.encodeUrl(input.startsWith("http") ? input : "https://" + input);
+      window.location.href = __uv$config.prefix + encodedUrl;
     }
   </script>
 </body>
