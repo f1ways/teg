@@ -3,35 +3,64 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ultraviolet Proxy Simple</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Ultraviolet Proxy</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #121212;
+      color: white;
+      text-align: center;
+      padding: 100px 20px;
+    }
+    input[type="text"] {
+      padding: 10px;
+      width: 300px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 20px;
+      margin-left: 10px;
+      border: none;
+      border-radius: 8px;
+      background-color: #4caf50;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Ultraviolet Proxy Simple</h1>
-    <input type="text" id="url" placeholder="Enter a website URL (example.com)" />
-    <button onclick="go()">Go</button>
-  </div>
+  <h1>Ultraviolet Proxy</h1>
+  <input type="text" id="url" placeholder="Enter full website URL (e.g. https://example.com)" />
+  <button onclick="go()">Go</button>
 
+  <script src="https://raw.githubusercontent.com/titaniumnetwork-dev/Ultraviolet/main/public/uv.bundle.js"></script>
   <script>
-    // Simple XOR encoder function used by Ultraviolet proxy
-    function xorEncode(str) {
-      return btoa([...str].map(c => String.fromCharCode(c.charCodeAt(0) ^ 2)).join(''));
-    }
+    // Define Ultraviolet config manually (since uv.config.js causes issues)
+    window.__uv$config = {
+      prefix: "https://uv.bare.network/service/",
+      encodeUrl: Ultraviolet.codec.xor.encode,
+      decodeUrl: Ultraviolet.codec.xor.decode,
+    };
 
     function go() {
       let input = document.getElementById("url").value.trim();
       if (!input) return alert("Please enter a URL");
 
+      // Ensure URL starts with http/https
       if (!input.startsWith("http://") && !input.startsWith("https://")) {
         input = "https://" + input;
       }
-      const encoded = xorEncode(input);
-      // Ultraviolet proxy base URL
-      const proxyUrl = "https://uv.bare.network/service/" + encoded;
 
-      window.location.href = proxyUrl;
+      // Encode URL with Ultraviolet codec
+      const encoded = window.__uv$config.encodeUrl(input);
+
+      // Redirect to the proxy URL
+      window.location.href = window.__uv$config.prefix + encoded;
     }
   </script>
 </body>
 </html>
+
