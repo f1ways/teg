@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ultraviolet Proxy Simple</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Ultraviolet Proxy Simple</h1>
+    <input type="text" id="url" placeholder="Enter a website URL (example.com)" />
+    <button onclick="go()">Go</button>
+  </div>
+
+  <script>
+    // Simple XOR encoder function used by Ultraviolet proxy
+    function xorEncode(str) {
+      return btoa([...str].map(c => String.fromCharCode(c.charCodeAt(0) ^ 2)).join(''));
+    }
+
+    function go() {
+      let input = document.getElementById("url").value.trim();
+      if (!input) return alert("Please enter a URL");
+
+      if (!input.startsWith("http://") && !input.startsWith("https://")) {
+        input = "https://" + input;
+      }
+      const encoded = xorEncode(input);
+      // Ultraviolet proxy base URL
+      const proxyUrl = "https://uv.bare.network/service/" + encoded;
+
+      window.location.href = proxyUrl;
+    }
+  </script>
+</body>
+</html>
