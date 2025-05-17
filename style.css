@@ -4,6 +4,7 @@ body {
   color: #fff;
   text-align: center;
   padding-top: 100px;
+  margin: 0;
 }
 
 input[type="text"] {
@@ -11,6 +12,7 @@ input[type="text"] {
   width: 300px;
   border-radius: 8px;
   border: none;
+  font-size: 16px;
 }
 
 button {
@@ -21,4 +23,6 @@ button {
   background-color: #4caf50;
   color: white;
   cursor: pointer;
+  font-size: 16px;
 }
+
